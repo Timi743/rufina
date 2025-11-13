@@ -1,48 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <link rel="stylesheet" href="rufina.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La dama de blanco</title>
+    <title>Tienda Online - Mis Productos</title>
+    <style>
+        /* ----------- ESTILOS GENERALES ----------- */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #555;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background-color: #ff9800;
+        }
+
+        /* ----------- SECCIÓN DE PRODUCTOS ----------- */
+        .contenedor-productos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .producto {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 250px;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+
+        .producto:hover {
+            transform: scale(1.03);
+        }
+
+        .producto img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .producto h3 {
+            color: #333;
+        }
+
+        .precio {
+            color: #e67e22;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* ----------- PIE DE PÁGINA ----------- */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-    <h1>La Dama De Blanco</h1>
 
-    <h3>Los integrantes de este grupo son:  <mark>Barreto - Lo Forte - Lopez Burgos
-     - Perez A. - Maurigh</mark>
-    </h3>
+    <header>
+        <h1>Mi Tienda Online</h1>
+        <p>Los mejores productos al mejor precio</p>
+    </header>
 
-    <h2>Resumenes:</h2>
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Productos</a>
+        <a href="#">Ofertas</a>
+        <a href="#">Contacto</a>
+    </nav>
 
-    <h2>La Dama De Blanco 1:</h2>
+    <section class="contenedor-productos">
+        <div class="producto">
+            <img src="https://via.placeholder.com/250" alt="Producto 1">
+            <h3>Producto 1</h3>
+            <p>Descripción breve del producto 1.</p>
+            <p class="precio">$19.99</p>
+            <button>Agregar al carrito</button>
+        </div>
 
-    <h3>Esta es la historia de Fabián, un muchacho que se enamora perdidamente
-    de Rufina. Sin embargo, esta muchacha, vinculada a una famosa leynda urbana 
-    del cementerio de la Recoleta, ha desaparecido. Para reencontrarla, Fabián
-    buscará el camino haia la otra Buenos Aire, una ciudad alternativa y misteriosa.
-    </h3>
+        <div class="producto">
+            <img src="https://via.placeholder.com/250" alt="Producto 2">
+            <h3>Producto 2</h3>
+            <p>Descripción breve del producto 2.</p>
+            <p class="precio">$29.99</p>
+            <button>Agregar al carrito</button>
+        </div>
 
-    <h2>El Regreso De La Dama De Blanco:</h2>
+        <div class="producto">
+            <img src="https://via.placeholder.com/250" alt="Producto 3">
+            <h3>Producto 3</h3>
+            <p>Descripción breve del producto 3.</p>
+            <p class="precio">$39.99</p>
+            <button a href="comprado.html">Agregar al carrito</button>
+        </div>
+    </section>
 
-    <h3>"La dama de blanco 2", o "El regreso de la dama de blanco" de Guillermo
-    Barrantes, trata de Rufina, la Dama de Blanco de la leyenda urbana, 
-    quien emprende un peligroso viaje pasando diferentes circulos miticos para
-    llegar a la "Otra Buenos Aires" para encontrar y rescatar a Fabián, su enamorado, mientras desvela los secretos
-    que conectan el mundo de los vivos y de los muertos.
-    </h3>
-
-    <h2>La Dama De Blanco Caitulo Final:</h2>
-
-    <h3>Fabián y Rufina quieren defender todos los amores imposibles de 
-    toda Bueno Aires, pasando por diferentes paradas de colectivos, ya que 
-    Fabián y Rufina tenía un amor incontrolable.
-    </h3>
-
-    <video width="400" controls poster="portada.png">
-        <source src="video.mp4" type="video/mp4">
-        Hola cracks
-    </video>
+    <footer>
+        <p>&copy; 2025 Mi Tienda Online | Contacto: info@mitienda.com</p>
+    </footer>
 
 </body>
 </html>
