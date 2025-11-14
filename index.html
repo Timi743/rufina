@@ -1,148 +1,230 @@
- <!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Online - Electriclaje</title>
-    <style>
-        /* ----------- ESTILOS GENERALES ----------- */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tienda Simple — Venta de Productos</title>
+  <meta name="description" content="Página demo para vender productos: catálogo, carrito y checkout (simulado).">
+  <style>
+    :root{
+      --accent:#1565c0;
+      --accent-2:#0d47a1;
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#0f1724}
+    header{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:18px 24px;display:flex;align-items:center;gap:16px}
+    .logo{font-weight:700;font-size:18px}
+    .search{flex:1}
+    .search input{width:100%;padding:8px 12px;border-radius:8px;border:none}
+    .cart-btn{background:transparent;border:1px solid rgba(255,255,255,0.2);color:white;padding:8px 12px;border-radius:8px;cursor:pointer}
 
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
+    .container{max-width:1100px;margin:28px auto;padding:0 18px}
+    .hero{display:flex;gap:24px;align-items:center}
+    .hero h1{margin:0;font-size:28px}
+    .hero p{margin:6px 0;color:var(--muted)}
 
-        nav {
-            background-color: #555;
-            display: flex;
-            justify-content: center;
-        }
+    .controls{display:flex;gap:12px;margin:18px 0}
+    .controls select,.controls button{padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:white}
 
-        nav a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px}
+    .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,36,0.06);display:flex;flex-direction:column}
+    .thumb{height:160px;border-radius:10px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent-2);margin-bottom:10px}
+    .title{font-weight:600}
+    .desc{font-size:13px;color:var(--muted);margin:6px 0 10px}
+    .price{margin-top:auto;font-weight:700}
+    .btn{background:var(--accent);color:white;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .btn.secondary{background:transparent;border:1px solid #ddd;color:var(--muted)}
 
-        nav a:hover {
-            background-color: #ff9800;
-        }
+    /* cart modal */
+    .cart-modal{position:fixed;right:20px;top:72px;width:340px;background:var(--card);border-radius:12px;box-shadow:0 10px 30px rgba(15,23,36,0.18);padding:12px;display:none;z-index:40}
+    .cart-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed #eee}
+    .cart-item:last-child{border-bottom:none}
+    .qty{display:flex;gap:6px;align-items:center}
 
-        /* ----------- SECCIÓN DE PRODUCTOS ----------- */
-        .contenedor-productos {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
-            gap: 20px;
-        }
+    footer{margin:40px 0;color:var(--muted);text-align:center}
 
-        .producto {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 250px;
-            text-align: center;
-            padding: 15px;
-            transition: transform 0.2s;
-        }
-
-        .producto:hover {
-            transform: scale(1.03);
-        }
-
-        .producto img {
-            width: 100%;
-            border-radius: 8px;
-        }
-
-        .producto h3 {
-            color: #333;
-        }
-
-        .precio {
-            color: #e67e22;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #218838;
-        }
-
-        /* ----------- PIE DE PÁGINA ----------- */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin-top: 30px;
-        }
-    </style>
+    @media (max-width:600px){
+      header{padding:12px}
+      .hero{flex-direction:column;align-items:flex-start}
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <div class="logo">MiTienda</div>
+    <div class="search"><input id="searchInput" placeholder="Buscar productos... (ej: zapatillas, remera)"></div>
+    <button id="cartToggle" class="cart-btn">🛒 Carrito (<span id="cartCount">0</span>)</button>
+  </header>
 
-    <header>
-        <h1>Mi Tienda Online - Electriclaje</h1>
-        <p>Los mejores productos al mejor precio</p>
-    </header>
-
-    <nav>
-        <a href="#">Inicio</a>
-        <a href="#">Productos</a>
-        <a href="#">Ofertas</a>
-        <a href="#">Contacto</a>
-    </nav>
-
-    <section class="contenedor-productos">
-        <div class="producto">
-            <img src="parlante.jpeg" alt="Producto 1">
-            <h3>Parlante</h3>
-            <p>Parlante hecho con materiales reciclados</p>
-            <p class="precio">$5.000</p>
-         <a href="comprado.html">
-            <button a href="comprado.html">Agregar al carrito</button>
-         </a>
-        </div>
-
-        <div class="producto">
-            <img src="https://via.placeholder.com/250" alt="Producto 2">
-            <h3>Teclado</h3>
-            <p>Teclado con cable</p>
-            <p class="precio">$29.99</p>
-            <button href="comprado.html">Agregar al carrito</button>
-        </div>
-
-        <div class="producto">
-            <img src="https://via.placeholder.com/250" alt="Producto 3">
-            <h3>Producto 3</h3>
-            <p>Descripción breve del producto 3.</p>
-            <p class="precio">$39.99</p>
-            <button a href="comprado.html">Agregar al carrito</button>
-        </div>
+  <div class="container">
+    <section class="hero">
+      <div>
+        <h1>Bienvenido a MiTienda</h1>
+        <p>Catálogo de muestra con carrito simple. Guarda localmente, filtra y finaliza compra (simulada).</p>
+      </div>
+      <div style="margin-left:auto">
+        <button class="btn" onclick="checkout()">Ir al checkout</button>
+      </div>
     </section>
 
-    <footer>
-        <p>&copy; 2025 Mi Tienda Online | Contacto: info@mitienda.com</p>
-    </footer>
+    <div class="controls">
+      <select id="categoryFilter">
+        <option value="">Todas las categorías</option>
+      </select>
+      <select id="sortBy">
+        <option value="default">Orden: Popular</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+      </select>
+      <button class="btn secondary" onclick="resetFilters()">Resetear filtros</button>
+    </div>
 
+    <section class="grid" id="productsGrid">
+      <!-- cards generadas por JS -->
+    </section>
+  </div>
+
+  <div class="cart-modal" id="cartModal" aria-hidden="true">
+    <h3>Tu carrito</h3>
+    <div id="cartItems"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+      <strong>Total: $<span id="cartTotal">0.00</span></strong>
+      <div>
+        <button class="btn secondary" onclick="clearCart()">Vaciar</button>
+        <button class="btn" onclick="checkout()">Pagar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Página de demostración — guarda como <code>tienda.html</code> y ábrela en tu navegador.
+  </footer>
+
+  <script>
+    // Datos de ejemplo (puedes reemplazarlos por tu API o CMS)
+    const products = [
+      {id:1,title:'Zapatillas Urbanas',price:179.99,category:'Calzado',desc:'Cómodas y modernas para el día a día.'},
+      {id:2,title:'Remera Básica',price:29.99,category:'Indumentaria',desc:'Algodón 100%, varios colores.'},
+      {id:3,title:'Auriculares Bluetooth',price:59.5,category:'Electrónica',desc:'Sonido nítido y batería de larga duración.'},
+      {id:4,title:'Mochila de Viaje',price:89.0,category:'Accesorios',desc:'Resistente y con múltiples compartimentos.'},
+      {id:5,title:'Reloj Deportivo',price:129.0,category:'Accesorios',desc:'Monitor de actividad y resistente al agua.'},
+      {id:6,title:'Pantalón Jogger',price:49.99,category:'Indumentaria',desc:'Ajuste cómodo y moderno.'}
+    ];
+
+    // Carrito guardado en localStorage
+    let cart = JSON.parse(localStorage.getItem('mitienda_cart')||'{}');
+
+    // Inicialización
+    const productsGrid = document.getElementById('productsGrid');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const sortBy = document.getElementById('sortBy');
+    const searchInput = document.getElementById('searchInput');
+
+    function populateCategories(){
+      const cats = Array.from(new Set(products.map(p=>p.category)));
+      cats.forEach(c=>{
+        const o = document.createElement('option'); o.value = c; o.textContent = c; categoryFilter.appendChild(o);
+      })
+    }
+
+    function renderProducts(list){
+      productsGrid.innerHTML='';
+      list.forEach(p=>{
+        const card = document.createElement('div'); card.className='card';
+        card.innerHTML = `
+          <div class="thumb">${p.title.split(' ')[0]}</div>
+          <div class="title">${p.title}</div>
+          <div class="desc">${p.desc}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+            <div class="price">$ ${p.price.toFixed(2)}</div>
+            <div>
+              <button class="btn secondary" onclick="addToCart(${p.id},1)">Añadir</button>
+            </div>
+          </div>
+        `;
+        productsGrid.appendChild(card);
+      })
+    }
+
+    function applyFilters(){
+      let list = products.slice();
+      const cat = categoryFilter.value;
+      const sort = sortBy.value;
+      const q = searchInput.value.trim().toLowerCase();
+      if(cat) list = list.filter(p=>p.category===cat);
+      if(q) list = list.filter(p=> p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+      if(sort==='price-asc') list.sort((a,b)=>a.price-b.price);
+      if(sort==='price-desc') list.sort((a,b)=>b.price-a.price);
+      renderProducts(list);
+    }
+
+    function resetFilters(){ categoryFilter.value=''; sortBy.value='default'; searchInput.value=''; applyFilters(); }
+
+    function addToCart(id,qty=1){
+      const p = products.find(x=>x.id===id); if(!p) return;
+      if(cart[id]) cart[id].qty += qty; else cart[id] = {id:p.id,title:p.title,price:p.price,qty:qty};
+      saveCart(); updateCartUI();
+    }
+
+    function removeFromCart(id){ delete cart[id]; saveCart(); updateCartUI(); }
+    function changeQty(id,delta){ if(!cart[id]) return; cart[id].qty += delta; if(cart[id].qty<1) delete cart[id]; saveCart(); updateCartUI(); }
+    function clearCart(){ cart={}; saveCart(); updateCartUI(); }
+
+    function saveCart(){ localStorage.setItem('mitienda_cart', JSON.stringify(cart)); }
+
+    function updateCartUI(){
+      const count = Object.values(cart).reduce((s,i)=>s+i.qty,0);
+      document.getElementById('cartCount').textContent = count;
+      const itemsEl = document.getElementById('cartItems'); itemsEl.innerHTML='';
+      let total=0;
+      Object.values(cart).forEach(it=>{
+        total += it.price*it.qty;
+        const div = document.createElement('div'); div.className='cart-item';
+        div.innerHTML = `
+          <div style="flex:1">
+            <div style="font-weight:600">${it.title}</div>
+            <div style="font-size:13px;color:var(--muted)">$ ${it.price.toFixed(2)} x ${it.qty}</div>
+          </div>
+          <div class="qty">
+            <button class="btn secondary" onclick="changeQty(${it.id},-1)">-</button>
+            <div style="min-width:28px;text-align:center">${it.qty}</div>
+            <button class="btn" onclick="changeQty(${it.id},1)">+</button>
+          </div>
+        `;
+        itemsEl.appendChild(div);
+      });
+      document.getElementById('cartTotal').textContent = total.toFixed(2);
+    }
+
+    // Cart modal toggle
+    const cartModal = document.getElementById('cartModal');
+    document.getElementById('cartToggle').addEventListener('click', ()=>{
+      cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
+      cartModal.setAttribute('aria-hidden', cartModal.style.display!=='block');
+    });
+
+    // Checkout simulado
+    function checkout(){
+      if(Object.keys(cart).length===0){ alert('El carrito está vacío. Agrega productos antes de pagar.'); return; }
+      // Simular formulario rápido
+      const name = prompt('Nombre completo para la compra:'); if(!name) return;
+      const addr = prompt('Dirección de envío:'); if(!addr) return;
+      alert(`Gracias ${name}!\nTu pedido fue simulado y totaliza $${document.getElementById('cartTotal').textContent}.\n(En una tienda real aquí se integraría un pasarela de pagos).`);
+      clearCart(); cartModal.style.display='none';
+    }
+
+    // Inicial
+    populateCategories(); renderProducts(products); applyFilters(); updateCartUI();
+
+    // eventos de filtros
+    categoryFilter.addEventListener('change', applyFilters);
+    sortBy.addEventListener('change', applyFilters);
+    searchInput.addEventListener('input', ()=>{ setTimeout(applyFilters,150); });
+
+  </script>
 </body>
 </html>
